@@ -55,7 +55,7 @@ blogRouter.post('/', async (c) => {
        data: {
         title: body.title,
         content: body.content,
-		authorId: parseInt(authorId)
+		authorId: Number(authorId)
        }
     });
 

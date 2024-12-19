@@ -22,6 +22,8 @@ export const useBlog = ({ id }: { id: string }) => {
             }
         })
             .then(response => {
+                console.log(response.data);
+                
                 setBlog(response.data.post);
                 setLoading(false);
             })
@@ -45,6 +47,8 @@ export const useBlogs = () => {
             }
         })
             .then(response => {
+                console.log(response.data);
+                
                 setBlogs(response.data.posts);
                 setLoading(false);
             })
