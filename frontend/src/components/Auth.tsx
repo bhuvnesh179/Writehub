@@ -31,7 +31,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             callForSpinner();
             navigate("/blogs")
         }catch(e){
-            alert("Error while signing up")
+            alert("Error While Signing Up")
         }
     }
 
