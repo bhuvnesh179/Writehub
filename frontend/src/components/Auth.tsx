@@ -1,11 +1,11 @@
 import { SignupInput } from "@100xbansal/medium-common"
-import axios from "axios"
 import { ChangeEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { BACKEND_URL } from "../config"
 import { Spinner } from "./Spinner"
+import { BloggingService } from "../services/api/api"
+import { TYPE } from "../constant"
 
-export const Auth = ({ type }: { type: "signup" | "signin" }) => {
+export const Auth = ({ type }: { type: TYPE }) => {
     const navigate = useNavigate();
     const [postInputs,setPostInputs ]= useState<SignupInput>({
         name: "",
@@ -23,7 +23,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
     async function sendRequest(){
         try{
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, postInputs);
+            const response = await BloggingService.auth(type, postInputs);
             const jwt = response.data.jwt;
             console.log(jwt);
             
