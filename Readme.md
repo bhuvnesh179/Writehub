@@ -1,5 +1,4 @@
-# WriteHub — Medium Clone
-
+# WriteHub — Content Publishing Platform
 A full-stack blogging platform inspired by Medium, built with a modern serverless tech stack.
 
 ## Tech Stack
