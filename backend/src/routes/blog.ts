@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PrismaClient } from '@prisma/client/edge'
+import { PrismaClient } from '@prisma/client'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { verify } from 'hono/jwt'
 import { createBlogInput, updateBlogInput } from "@100xbansal/medium-common";
