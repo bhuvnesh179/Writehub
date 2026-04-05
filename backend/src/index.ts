@@ -5,7 +5,9 @@
 
   const app = new Hono()
 
-  app.use('/*', cors())
+  app.use('/*', cors({
+    origin: ['http://localhost:5173', 'https://medium-nine-zeta.vercel.app']
+  }))
   app.route("api/v1/user", userRouter);
   app.route("api/v1/blog", blogRouter);
 
