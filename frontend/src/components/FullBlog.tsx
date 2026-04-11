@@ -1,4 +1,4 @@
-import { Blog } from "../hooks"
+import { Blog } from "../api/services/blog.service"
 import { Appbar } from "./Appbar"
 import { Avatar } from "./BlogCard"
 

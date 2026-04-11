@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
-import { SignupInput } from "@100xbansal/medium-common";
+import { SignupInput } from "../../constant";
 
 export const BloggingService = {
     auth: (type: "signup" | "signin", data: SignupInput) => {
