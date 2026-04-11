@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Signup } from './pages/Signup'
 import { Signin } from './pages/Singin'
 import { Blog } from './pages/Blog'
@@ -11,18 +11,16 @@ function App() {
 
   return (
     <>
-      <ProtectedRoute>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Signup />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blog/:id" element={<Blog />} />
-            <Route path="/publish" element={<Publish />} />
-          </Routes>
-        </BrowserRouter>
-      </ProtectedRoute>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={localStorage.getItem("token") ? <Navigate to="/blogs" /> : <Signup />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
+          <Route path="/blog/:id" element={<ProtectedRoute><Blog /></ProtectedRoute>} />
+          <Route path="/publish" element={<ProtectedRoute><Publish /></ProtectedRoute>} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
