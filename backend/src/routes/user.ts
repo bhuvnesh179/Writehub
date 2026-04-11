@@ -2,7 +2,8 @@ import { Hono } from "hono";
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt'
-import { signinInput, signupInput } from "@100xbansal/medium-common";
+import { signinInput, signupInput } from "../constant";
+import bcrypt from "bcryptjs";
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -25,11 +26,23 @@ userRouter.post('/signup', async (c) => {
                 message: "Inputs are not correct"
             })
         }
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                email: body.email,
+            }
+        });
+
+        if(existingUser){
+            c.status(403);
+            return c.json({error: "user already exists"});
+        }
+
+        const hashedPassword = await bcrypt.hash(body.password, 10);
 
         const user = await prisma.user.create({
             data:{
                 email: body.email,
-                password: body.password,
+                password: hashedPassword,
                 name: body.name,
             },
         })
@@ -61,6 +74,23 @@ userRouter.post('/signin', async(c) => {
             return c.json({
                 message: "Inputs are not correct"
             })
+        }
+       
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                email: body.email,
+            }
+        });
+
+        if(!existingUser){
+            c.status(403);
+            return c.json({error: "user not found"});
+        }
+
+        const isMatch = await bcrypt.compare(body.password, existingUser.password);
+        if(!isMatch){
+            c.status(403);
+            return c.json({error: "invalid password"});
         }
   
         const user = await prisma.user.findUnique({
