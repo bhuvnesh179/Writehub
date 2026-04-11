@@ -1,33 +1,21 @@
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../config";
-import axios from "axios";
-
-export interface Blog {
-    "content": string;
-    "title": string;
-    "id": number;
-    "author": {
-        "name": string
-    }
-}
+import { Blog, getBlogById, getBlogs } from "../api/services/blog.service";
 
 export const useBlog = ({ id }: { id: string }) => {
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
 
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
-            headers: {
-                Authorization: localStorage.getItem("token")
-            }
-        })
+        getBlogById(id)
             .then(response => {
-                console.log(response.data);
-                
-                setBlog(response.data.post);
-                setLoading(false);
+                setBlog(response);
             })
-            
+            .catch(() => {
+                setBlog(undefined);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, [id])
 
     return {
@@ -41,18 +29,16 @@ export const useBlogs = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
 
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-            headers: {
-                Authorization: localStorage.getItem("token")
-            }
-        })
+        getBlogs()
             .then(response => {
-                console.log(response.data);
-                
-                setBlogs(response.data.posts);
-                setLoading(false);
+                setBlogs(response);
             })
-            
+            .catch(() => {
+                setBlogs([]);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, [])
 
 

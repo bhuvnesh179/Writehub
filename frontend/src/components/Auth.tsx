@@ -1,9 +1,9 @@
-import axios from "axios"
 import { ChangeEvent, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { BACKEND_URL } from "../config"
 import { Spinner } from "./Spinner"
 import { SignupInput } from "../constant"
+import { authenticate } from "../api/services/auth.service"
+import { getAuthToken, setAuthToken } from "../lib/auth"
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = getAuthToken();
     if (token) {
         navigate("/blogs", { replace: true });
     }
@@ -24,10 +24,8 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     async function sendRequest() {
         setIsLoading(true);
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, postInputs);
-            const jwt = response.data.jwt;
-
-            localStorage.setItem("token", jwt);
+            const response = await authenticate(type, postInputs);
+            setAuthToken(response.jwt);
             navigate("/blogs", { replace: true })
         } catch (e) {
             alert("Error while signing up")

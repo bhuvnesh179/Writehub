@@ -1,8 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Appbar } from "../components/Appbar"
-import { BACKEND_URL } from "../config";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { createBlog } from "../api/services/blog.service";
 
 export const Publish = () => {
     const [title, setTitle] = useState("");
@@ -20,15 +19,11 @@ export const Publish = () => {
                 setContent(e.target.value)
             }} />
             <button onClick={async () => {
-                const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, {
+                const response = await createBlog({
                     title,
                     content
-                }, {
-                    headers: {
-                        Authorization: localStorage.getItem("token")
-                    }
                 });
-                navigate(`/blog/${response.data.id}`)
+                navigate(`/blog/${response.id}`)
             }} type="submit" className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 Publish post
             </button>
