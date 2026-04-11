@@ -1,11 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Spinner } from "./Spinner"
-import { SignupInput } from "../constant"
+import { SignupInput, TYPE } from "../constant"
 import { authenticate } from "../api/services/auth.service"
 import { getAuthToken, setAuthToken } from "../lib/auth"
 
-export const Auth = ({ type }: { type: "signup" | "signin" }) => {
+export const Auth = ({ type }: { type: TYPE }) => {
     const navigate = useNavigate();
     const [postInputs, setPostInputs] = useState<SignupInput>({
         name: "",
